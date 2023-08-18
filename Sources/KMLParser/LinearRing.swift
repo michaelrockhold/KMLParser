@@ -19,9 +19,11 @@
 
 import Foundation
 
-public class Style: Element {
+public class LinearRing: Element {
     
     internal override func didEnd() {
-        print("-Style")
+        print("-LinearRing")
     }
+    
+    
 }

@@ -1,6 +1,6 @@
 /*
  This file is part of KMLParser, a program for populating a graph of
- graphical objects from a KML file
+ geo features from a KML file
  Copyright (C) 2023  Michael E. Rockhold
 
  This program is free software: you can redistribute it and/or modify
@@ -18,3 +18,73 @@
 */
 
 import Foundation
+
+struct Coordinate {
+    let longitude: Double
+    let latitude: Double
+    let altitude: Double
+}
+
+public class Element {
+    let parent: Element?
+    let attributes: [String : String]
+    
+    public var id: String? {
+        return attributes["id"] ?? nil
+    }
+    
+    public private(set) var text: String? = nil
+    
+    public init(parent p: Element?, attributes ad: [String : String]) {
+        parent = p
+        attributes = ad
+    }
+    
+    internal func didEnd() {}
+
+    internal func add(text t: String) {
+        if text == nil {
+            text = t
+        } else {
+            text!.append(t)
+        }
+    }
+    
+}
+
+protocol AcceptsAddress {
+    func accept(address: Address)
+}
+protocol AcceptsCoordinates {
+    func accept(coordinates: Coordinates)
+}
+protocol AcceptsDescription {
+    func accept(description: Description)
+}
+protocol AcceptsDocument {
+    func accept(document: Document)
+}
+protocol AcceptsGeometryCollection {
+    func accept(geometryCollection: GeometryCollection)
+}
+protocol AcceptsLineString {
+    func accept(lineString: LineString)
+}
+protocol AcceptsName {
+    func accept(name: Name)
+}
+protocol AcceptsPlacemark {
+    func accept(placemark: Placemark)
+}
+protocol AcceptsPoint {
+    func accept(point: Point)
+}
+protocol AcceptsPolygon {
+    func accept(polygon: Polygon)
+}
+protocol AcceptsStyle {
+    func accept(style: Style)
+}
+protocol AcceptsCDATA {
+    func accept(CDATA: String)
+}

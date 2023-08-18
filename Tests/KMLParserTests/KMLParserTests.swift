@@ -18,10 +18,65 @@
 */
 
 import XCTest
+import MapKit
 @testable import KMLParser
 
 final class KMLParserTests: XCTestCase {
-    func testExample() throws {
-        XCTAssertEqual(KMLParser.Parser().text, "Hello, World!")
+    
+    func testParse1() {
+        // Locate the path to the fixture KML file in the test bundle
+        // and parse it with the KMLParser.
+        let url = Bundle.module.url(forResource: "route", withExtension: "kml")!
+        let document = KMLParser.Parser.parse(at: url)
+        
+        XCTAssertNotNil(document)
+    }
+    
+    func testCreatesExpectedPlacemarkPoints() throws {
+        
+        // Locate the path to the fixture KML file in the test bundle
+        // and parse it with the KMLParser.
+        let url = Bundle.module.url(forResource: "route", withExtension: "kml")!
+        let document = KMLParser.Parser.parse(at: url)!
+                
+        // Walk the list of overlays and annotations and create a MKMapRect that
+        // bounds all of them and store it into flyTo.
+        var flyTo = MKMapRect.null
+        for placemark in document.points {
+            let pointRect = placemark.boundingMapRect
+            if flyTo.isNull {
+                flyTo = pointRect
+            } else {
+                flyTo = flyTo.union(pointRect)
+            }
+        }
+
+        XCTAssertFalse(flyTo.isNull)
+        XCTAssertFalse(flyTo.isEmpty)
+    }
+
+    func testCreatesExpectedPlacemarkPolygons() throws {
+        
+        let url = Bundle.module.url(forResource: "route", withExtension: "kml")!
+        let document = KMLParser.Parser.parse(at: url)!
+                
+        // Walk the list of overlays and annotations and create a MKMapRect that
+        // bounds all of them and store it into flyTo.
+        var flyTo = MKMapRect.null
+        for polygon in document.polygons {
+            if flyTo.isNull {
+                flyTo = polygon.boundingMapRect
+            } else {
+                flyTo = flyTo.union(polygon.boundingMapRect)
+            }
+        }
+        
+        XCTAssertFalse(flyTo.isNull)
+        XCTAssertFalse(flyTo.isEmpty)
+    }
+
+    func testETypes() {
+        XCTAssertTrue(KMLParser.eType(for: "LinearRing") == KMLParser.ElementType.LinearRing)
+        XCTAssertNil(KMLParser.eType(for: "WeirdThing"))
     }
 }

@@ -1,6 +1,6 @@
 /*
  This file is part of KMLParser, a program for populating a graph of
- graphical objects from a KML file
+ geo features from a KML file
  Copyright (C) 2023  Michael E. Rockhold
 
  This program is free software: you can redistribute it and/or modify
@@ -18,3 +18,12 @@
 */
 
 import Foundation
+
+public class InnerBoundaryIs: Element {
+    
+    internal override func didEnd() {
+        print("-InnerBoundaryIs")
+    }
+    
+    
+}

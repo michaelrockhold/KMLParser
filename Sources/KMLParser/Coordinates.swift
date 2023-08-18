@@ -19,9 +19,21 @@
 
 import Foundation
 
-public class Style: Element {
+public class Coordinates: Element {
+    
+    internal private(set) var coordinates = [Coordinate]()
     
     internal override func didEnd() {
-        print("-Style")
+        let tuples = text?.split(separator: " ", omittingEmptySubsequences: true)
+        for t in tuples! {
+            let coordStrs = t.split(separator: ",")
+            // TODO: handle the various kinds of errors we could have here
+            let coordinate = Coordinate(longitude: Double(coordStrs[0])!, latitude: Double(coordStrs[1])!, altitude: Double(coordStrs[2])!)
+            coordinates.append(coordinate)
+        }
+        
+        if let p = parent as? AcceptsCoordinates {
+            p.accept(coordinates: self)
+        }
     }
 }

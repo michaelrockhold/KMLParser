@@ -19,9 +19,16 @@
 
 import Foundation
 
-public class Style: Element {
+public class Description: Element, AcceptsCDATA {
     
     internal override func didEnd() {
-        print("-Style")
+        print("-Description")
+        if let p = parent as? AcceptsDescription {
+            p.accept(description: self)
+        }
+    }
+    
+    internal func accept(CDATA: String) {
+        add(text: CDATA)
     }
 }

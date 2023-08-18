@@ -40,6 +40,9 @@ let package = Package(
             dependencies: []),
         .testTarget(
             name: "KMLParserTests",
-            dependencies: ["KMLParser"]),
+            dependencies: ["KMLParser"],
+            resources: [
+                .copy("Resources/route.kml")
+            ]),
     ]
 )

@@ -19,9 +19,11 @@
 
 import Foundation
 
-public class Style: Element {
+public class GeometryCollection: Element {
     
     internal override func didEnd() {
-        print("-Style")
+        print("-GeometryCollection")
     }
+    
+    
 }

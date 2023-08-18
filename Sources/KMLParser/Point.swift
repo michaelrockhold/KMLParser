@@ -1,6 +1,6 @@
 /*
  This file is part of KMLParser, a program for populating a graph of
- graphical objects from a KML file
+ geo features from a KML file
  Copyright (C) 2023  Michael E. Rockhold
 
  This program is free software: you can redistribute it and/or modify
@@ -18,3 +18,23 @@
 */
 
 import Foundation
+
+public class Point: Element, AcceptsCoordinates {
+    
+    internal private(set) var coordinate: Coordinate? = nil
+    
+    internal override func didEnd() {
+        print("-Point")
+                
+        if let p = parent as? AcceptsPoint {
+            p.accept(point: self)
+        }
+    }
+    
+    internal func accept(coordinates: Coordinates) {
+        guard !coordinates.coordinates.isEmpty else {
+            return
+        }
+        self.coordinate = coordinates.coordinates[0]
+    }
+}

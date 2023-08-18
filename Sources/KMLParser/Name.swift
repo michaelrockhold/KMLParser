@@ -19,9 +19,12 @@
 
 import Foundation
 
-public class Style: Element {
+public class Name: Element {
     
     internal override func didEnd() {
-        print("-Style")
+        print("-Name")
+        if let p = parent as? AcceptsName {
+            p.accept(name: self)
+        }
     }
 }

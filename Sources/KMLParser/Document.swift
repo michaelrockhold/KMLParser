@@ -18,10 +18,40 @@
 */
 
 import Foundation
+import MapKit
 
-public class Style: Element {
+public class Document: Element, AcceptsName, AcceptsStyle, AcceptsPlacemark {
     
+    public private(set) var name: String = ""
+    public private(set) var placemarks = [Placemark]()
+        
     internal override func didEnd() {
-        print("-Style")
+        print("-Document")
+        if let p = parent as? AcceptsDocument {
+            p.accept(document: self)
+        }
+    }
+
+    internal func accept(name: Name) {
+        self.name = name.text ?? ""
+    }
+
+    internal func accept(style: Style) {
+    }
+
+    internal func accept(placemark: Placemark) {
+        placemarks.append(placemark)
+    }
+
+    public var points: [Placemark] {
+        return placemarks.filter { pm in
+            pm.point != nil
+        }
+    }
+    
+    public var polygons: [Placemark] {
+        return placemarks.filter { pm in
+            pm.polygon != nil
+        }
     }
 }

@@ -19,9 +19,15 @@
 
 import Foundation
 
-public class Style: Element {
-    
-    internal override func didEnd() {
-        print("-Style")
+public class KMLElement: Element, AcceptsDocument {
+    public private(set) var document: Document? = nil
+        
+    public override func didEnd() {
+        print("-KMLElement")
     }
+    
+    public func accept(document: Document) {
+        self.document = document
+    }
+
 }
